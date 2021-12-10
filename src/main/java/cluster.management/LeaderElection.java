@@ -1,39 +1,18 @@
+package cluster.management;
+
 import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
 public class LeaderElection implements Watcher {
-    private final static String ZOOKEEPER_ADDRESS = "localhost:2181";
-    private final static int SESSION_TIMEOUT = 3000;
-    private ZooKeeper zooKeeper;
+    private final ZooKeeper zooKeeper;
     private static final String ELECTION_NAMESPACE = "/election";
     private String currentZnodeName;
 
-    public static void main(String[] args) throws IOException, InterruptedException, KeeperException {
-        LeaderElection leaderElection = new LeaderElection();
-        leaderElection.connectToZookeeper();
-        leaderElection.volunteerForLeadership();
-        leaderElection.reelectLeader();
-        leaderElection.run();
-        leaderElection.close();
-        System.out.println("Disconnected from ZooKeeper, exiting application");
-    }
-
-    public void connectToZookeeper() throws IOException {
-        zooKeeper = new ZooKeeper(ZOOKEEPER_ADDRESS, SESSION_TIMEOUT, this);
-    }
-
-    public void run() throws InterruptedException {
-        synchronized (zooKeeper) {
-            zooKeeper.wait();
-        }
-    }
-
-    public void close() throws InterruptedException {
-        zooKeeper.close();
+    public LeaderElection(ZooKeeper zooKeeper) {
+        this.zooKeeper = zooKeeper;
     }
 
     public void volunteerForLeadership() throws InterruptedException, KeeperException {
@@ -67,23 +46,12 @@ public class LeaderElection implements Watcher {
     @Override
     public void process(WatchedEvent watchedEvent) {
         switch (watchedEvent.getType()) {
-            case None:
-                if (watchedEvent.getState().equals(Event.KeeperState.SyncConnected)) {
-                    System.out.println("Successfully connected to ZooKeeper");
-                } else {
-                  synchronized (zooKeeper) {
-                      System.out.println("Disconnected from ZooKeeper event");
-                      zooKeeper.notifyAll();
-                  }
-                }
-                break;
             case NodeDeleted:
                 try {
                     reelectLeader();
                 } catch (InterruptedException e) {
                 } catch (KeeperException e) {
                 }
-                break;
         }
     }
 }
