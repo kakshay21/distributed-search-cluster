@@ -53,8 +53,8 @@ public class LeaderElection implements Watcher {
             case NodeDeleted:
                 try {
                     reelectLeader();
-                } catch (InterruptedException e) {
-                } catch (KeeperException e) {
+                } catch (InterruptedException | KeeperException e) {
+                    e.printStackTrace();
                 }
         }
     }

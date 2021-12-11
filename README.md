@@ -1,1 +1,1 @@
-# leader-election
+# Naive TF-IDF based distributed, fault-tolerant search cluster
