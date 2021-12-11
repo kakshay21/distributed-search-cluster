@@ -40,7 +40,7 @@ public class WebSever {
     }
 
     public void close() {
-        server.stop(0);
+        server.stop(10);
     }
 
     private void handleStatusCheckRequest(HttpExchange exchange) throws IOException {

@@ -1,0 +1,53 @@
+version: '3.4'
+
+services:
+  zookeeper:
+    image: zookeeper:3.7.0
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    volumes:
+      - "./zookeeper/data:/data"
+      - "./zookeeper/logs:/datalog"
+    ports:
+      - "2181:2181"
+    network_mode: "host"
+
+  node1:
+    build: .
+    container_name: node1
+    command: "9001"
+    depends_on:
+      - zookeeper
+    ports: 
+      - "9001:9001"
+    network_mode: "host"
+
+  node2:
+    build: .
+    container_name: node2
+    command: "9002"
+    depends_on:
+      - zookeeper
+    ports: 
+      - "9002:9002"
+    network_mode: "host"
+
+  node3:
+    build: .
+    container_name: node3
+    command: "9003"
+    depends_on:
+      - zookeeper
+    ports:
+      - "9003:9003"
+    network_mode: "host"
+
+  node4:
+    build: .
+    container_name: node4
+    command: "9004"
+    depends_on:
+      - zookeeper
+    ports:
+      - "9004:9004"
+    network_mode: "host"

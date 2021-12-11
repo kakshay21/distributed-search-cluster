@@ -45,7 +45,6 @@ public class ServiceRegistry implements Watcher {
         try {
             if (zooKeeper.exists(serviceRegisteryZnode, false) == null) {
                 zooKeeper.create(serviceRegisteryZnode, new byte[]{}, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
-
             }
         } catch (KeeperException | InterruptedException e) {
             e.printStackTrace();

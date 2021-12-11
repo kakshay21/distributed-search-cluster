@@ -24,11 +24,11 @@ public class OnElectionAction implements OnElectionCallback {
     public void onElectedToBeLeader() {
         try {
             workerServiceRegistry.unregisterFromCluster();
+            workerServiceRegistry.registryForUpdates();
         } catch (KeeperException| InterruptedException e) {
             e.printStackTrace();
         }
 
-        workerServiceRegistry.registryForUpdates();
         if (webServer != null) {
             webServer.close();
         }
@@ -38,10 +38,11 @@ public class OnElectionAction implements OnElectionCallback {
         webServer.startServer();
 
         try {
-            String currentAddress = String.format("https://%s:%d/%s", InetAddress.getLocalHost().getCanonicalHostName(), port, searchCoordinator.getEndpoint());
+            String currentAddress = String.format("https://%s:%d%s", InetAddress.getLocalHost().getCanonicalHostName(), port, searchCoordinator.getEndpoint());
             coordinatorServiceRegistry.registerToCluster(currentAddress);
         } catch (InterruptedException| KeeperException | UnknownHostException e) {
             e.printStackTrace();
+            return;
         }
     }
 
@@ -50,7 +51,7 @@ public class OnElectionAction implements OnElectionCallback {
         SearchWorker searchWorker = new SearchWorker();
         webServer = new WebSever(port, searchWorker);
         try {
-            String currentAddress = String.format("https://%s:%d/%s", InetAddress.getLocalHost().getCanonicalHostName(), port, searchWorker.getEndpoint());
+            String currentAddress = String.format("https://%s:%d%s", InetAddress.getLocalHost().getCanonicalHostName(), port, searchWorker.getEndpoint());
             workerServiceRegistry.registerToCluster(currentAddress);
         } catch (UnknownHostException | InterruptedException | KeeperException e) {
             e.printStackTrace();

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class LeaderElection implements Watcher {
     private final ZooKeeper zooKeeper;
-    private static final String ELECTION_NAMESPACE = "/election";
+    private static final String ELECTION_NAMESPACE = "/workers_service_registry";
     private String currentZnodeName;
     private final OnElectionCallback onElectionCallback;
 
