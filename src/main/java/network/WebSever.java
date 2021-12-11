@@ -23,7 +23,7 @@ public class WebSever {
 
     public void startServer() {
         try {
-            this.server = HttpServer.create(new InetSocketAddress(port), 0);
+            server = HttpServer.create(new InetSocketAddress(port), 0);
         } catch (IOException e) {
             e.printStackTrace();
             return;
@@ -40,7 +40,9 @@ public class WebSever {
     }
 
     public void close() {
-        server.stop(10);
+        if (server != null) {
+            server.stop(10);
+        }
     }
 
     private void handleStatusCheckRequest(HttpExchange exchange) throws IOException {
