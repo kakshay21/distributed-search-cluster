@@ -1,6 +1,7 @@
 
 .idea
 target
+zookeeper
 # Compiled class file
 *.class
 
