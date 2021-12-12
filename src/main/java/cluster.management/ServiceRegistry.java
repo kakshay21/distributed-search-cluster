@@ -73,7 +73,6 @@ public class ServiceRegistry implements Watcher {
         }
         this.allServiceAddress = Collections.unmodifiableList(addresses);
         System.out.println("The cluster addresses are: " + this.allServiceAddress);
-
     }
 
     @Override
@@ -83,6 +82,5 @@ public class ServiceRegistry implements Watcher {
         } catch (InterruptedException | KeeperException e) {
             e.printStackTrace();
         }
-
     }
 }
