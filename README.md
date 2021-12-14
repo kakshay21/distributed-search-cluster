@@ -24,4 +24,4 @@ And then leader divide the task and send it to worker instances.
 
 
 The leader election criteria is also naive at this point. We select the first one among the available pool of workers.
-To reduce the herd effect, all the worker listen to their previous worker instance and when the leader node goes down, this chaining helps us to avoid making calls to leader service registry.
+To reduce the herd effect, all the worker listen to their previous worker instance and when the leader node goes down, this chaining helps us to avoid making large number of calls to leader service registry.
